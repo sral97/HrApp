@@ -36,7 +36,7 @@ namespace HRManagementSoftware.Controllers
             return _context.Employees.ToList(); ;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetEmployee")]
         public IActionResult GetById(Guid id)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.Id == id);
@@ -49,21 +49,55 @@ namespace HRManagementSoftware.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody]Employee employee)
+        public IActionResult Create([FromBody]Employee employee)
         {
-            //Todo
+            if(employee == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Employees.Add(employee);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetEmployee", new { id = employee.Id }, employee);
         }
 
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody]Employee employee)
+        public IActionResult Update(Guid id, [FromBody]Employee employee)
         {
-            //Todo
+            if (employee == null || employee.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var employeeToUpdate = _context.Employees.FirstOrDefault(e => e.Id == id);
+            if (employeeToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.Age = employee.Age;
+            employeeToUpdate.Addresses = employee.Addresses;
+
+            _context.Employees.Update(employeeToUpdate);
+            _context.SaveChanges();
+            return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public IActionResult Delete(Guid id)
         {
-            //Todo
+            var employeeToDelete = _context.Employees.FirstOrDefault(e => e.Id == id);
+            if (employeeToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Employees.Remove(employeeToDelete);
+            _context.SaveChanges();
+            return new NoContentResult();
         }
     }
 }
