@@ -1,30 +1,34 @@
-﻿<div class="form-group">
-    <label for="firstName">FirstName</label>
-    <input id="firstName" type="text" class="form-control" value="{{ $ctrl.employee.firstName }}" />
-</div>
-<div class="form-group">
-    <label for="lastName">LastName</label>
-    <input id="lastName" type="text" class="form-control" value="{{ $ctrl.employee.lastName }}" />
-</div>
-<div class="form-group">
-    <label for="age">Age</label>
-    <input id="age" type="number" class="form-control" value="{{ $ctrl.employee.age }}" />
-</div>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Street</th>
-            <th>Zip</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr data-ng-repeat="address in $ctrl.employee.addresses">
-            <td>{{ address.street }}</td>
-            <td>{{ address.zip }}</td>
-            <td>{{ address.city }}</td>
-            <td>{{ address.state }}</td>
-        </tr>
-    </tbody>
-</table>
+﻿<form>
+    <div class="form-group">
+        <label for="firstName">FirstName</label>
+        <input id="firstName" type="text" class="form-control" data-ng-model="employee.firstName" required />
+    </div>
+    <div class="form-group">
+        <label for="lastName">LastName</label>
+        <input id="lastName" type="text" class="form-control" data-ng-model="employee.lastName" required />
+    </div>
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input id="age" type="number" class="form-control" data-ng-model="employee.age" required />
+    </div>
+    <input id="employeeId" type="hidden" data-ng-model="employee.id" />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Street</th>
+                <th>Zip</th>
+                <th>City</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="address in employee.addresses">
+                <td>{{ address.street }}</td>
+                <td>{{ address.zip }}</td>
+                <td>{{ address.city }}</td>
+                <td>{{ address.state }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-success" data-ng-click="save(employee)">Save</button>
+</form>
