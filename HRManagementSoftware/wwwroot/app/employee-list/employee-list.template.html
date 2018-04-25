@@ -1,0 +1,16 @@
+﻿<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="employee in $ctrl.employees">
+            <td><a href="#!/employees/{{employee.id}}">{{ employee.firstName }}</a></td>
+            <td>{{ employee.lastName }}</td>
+            <td>{{ employee.age }}</td>
+        </tr>
+    </tbody>
+</table>

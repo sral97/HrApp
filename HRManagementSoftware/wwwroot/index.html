@@ -4,25 +4,19 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <script src="/js/angular.min.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="/js/angular-route.min.js"></script>
+    <script src="/app/app.module.js"></script>
+    <script src="/app/app.config.js"></script>
+    <script src="/app/employee-list/employee-list.module.js"></script>
+    <script src="/app/employee-list/employee-list.component.js"></script>
+    <script src="/app/employee-detail/employee-detail.module.js"></script>
+    <script src="/app/employee-detail/employee-detail.component.js"></script>
     <title>HR Management Software</title>
 </head>
-<body data-ng-controller="EmployeeController">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Age</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-ng-repeat="employee in employees">
-                <td>{{ employee.firstName }}</td>
-                <td>{{ employee.lastName }}</td>
-                <td>{{ employee.age }}</td>
-            </tr>
-        </tbody>
-    </table>
+<body>
+    <div class="container">
+        <div class="row" data-ng-view>
+        </div>
+    </div>
 </body>
 </html>
