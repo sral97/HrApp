@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HRManagementSoftware.Models;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,13 +20,27 @@ namespace HRManagementSoftware.Controllers
             _context = context;
 
             if(_context.Employees.Count() == 0) {
-                _context.Employees.Add(
-                    new Employee {
-                        FirstName = "Lars",
-                        LastName = "Müller",
-                        Age = 20
+                Address address = new Address
+                {
+                    Street = "Bräuhausgasse 3a",
+                    Zip = 2700,
+                    City = "Wiener Neustadt",
+                    State = "Austria"
+                    //EmployeeId = employee.Id
+                };
+                Employee employee = new Employee
+                {
+                    FirstName = "Lars",
+                    LastName = "Müller",
+                    Age = 20,
+                    Addresses = new List<Address>
+                    {
+                        address
                     }
-                );
+                };
+
+                _context.Employees.Add(employee);
+                _context.Addresses.Add(employee.Addresses.First());
                 _context.SaveChanges();
             }
         }
@@ -39,7 +54,7 @@ namespace HRManagementSoftware.Controllers
         [HttpGet("{id}", Name = "GetEmployee")]
         public IActionResult GetById(Guid id)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.Id == id);
+            var employee = _context.Employees.Include(e => e.Addresses).FirstOrDefault(e => e.Id == id);
             if (employee == null)
             {
                 return NotFound();
