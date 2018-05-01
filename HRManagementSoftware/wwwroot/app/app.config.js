@@ -6,10 +6,10 @@
 
             $routeProvider.
                 when('/employees', {
-                    template: '<employee-list></employee-list>'
+                    template: '<employee-list class="col"></employee-list>'
                 }).
                 when('/employees/:employeeId', {
-                    template: '<employee-detail></employee-detail>'
+                    template: '<employee-detail class="col"></employee-detail>'
                 }).
                 otherwise('/employees');
         }

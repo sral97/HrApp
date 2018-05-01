@@ -85,7 +85,7 @@ namespace HRManagementSoftware.Controllers
                 return BadRequest();
             }
 
-            var employeeToUpdate = _context.Employees.FirstOrDefault(e => e.Id == id);
+            var employeeToUpdate = _context.Employees.Include(e => e.Addresses).FirstOrDefault(e => e.Id == id);
             if (employeeToUpdate == null)
             {
                 return NotFound();
@@ -94,9 +94,36 @@ namespace HRManagementSoftware.Controllers
             employeeToUpdate.FirstName = employee.FirstName;
             employeeToUpdate.LastName = employee.LastName;
             employeeToUpdate.Age = employee.Age;
-            employeeToUpdate.Addresses = employee.Addresses;
 
-            _context.Employees.Update(employeeToUpdate);
+            foreach (Address address in employeeToUpdate.Addresses)
+            {
+                if (!employee.Addresses.Any(a => a.Id == address.Id))
+                {
+                    _context.Addresses.Remove(address);
+                }
+            }
+
+            var addressesToAdd = new List<Address>();
+            foreach (Address address in employee.Addresses)
+            {
+                //if (!employeeToUpdate.Addresses.Contains(address))
+                //{
+                //    addressesToAdd.Add(address);
+                //}
+                var exisitngAddress = employeeToUpdate.Addresses
+                .Where(c => c.Id == address.Id)
+                .SingleOrDefault();
+
+                if (exisitngAddress != null)
+                    // Update child
+                    _context.Entry(exisitngAddress).CurrentValues.SetValues(address);
+                else
+                {
+                    employeeToUpdate.Addresses.Add(address);
+                }
+            }
+
+           // _context.Employees.Update(employeeToUpdate);
             _context.SaveChanges();
             return new NoContentResult();
         }

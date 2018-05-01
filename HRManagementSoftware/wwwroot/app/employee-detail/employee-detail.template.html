@@ -1,4 +1,6 @@
-﻿<form>
+﻿<a href="#!/employees">&lt; Back to list</a>
+
+<form>
     <div class="form-group">
         <label for="firstName">FirstName</label>
         <input id="firstName" type="text" class="form-control" data-ng-model="employee.firstName" required />
@@ -19,16 +21,19 @@
                 <th>Zip</th>
                 <th>City</th>
                 <th>State</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr data-ng-repeat="address in employee.addresses">
-                <td>{{ address.street }}</td>
-                <td>{{ address.zip }}</td>
-                <td>{{ address.city }}</td>
-                <td>{{ address.state }}</td>
+                <td><input id="street-{{ address.id }}" type="text" class="form-control" data-ng-model="address.street" required /></td>
+                <td><input id="zip-{{ address.id }}" type="number" class="form-control" data-ng-model="address.zip" required /></td>
+                <td><input id="city-{{ address.id }}" type="text" class="form-control" data-ng-model="address.city" required /></td>
+                <td><input id="state-{{ address.id }}" type="text" class="form-control" data-ng-model="address.state" required /></td>
+                <td><button class="btn btn-danger" data-ng-click="removeAddress(address)" type="button">&minus;</button></td>
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-success" data-ng-click="save(employee)">Save</button>
+    <button class="btn btn-info" data-ng-click="addAddress(employee)" type="button">Add address</button>
+    <button class="btn btn-success" data-ng-click="save(employee)" type="submit">Save</button>
 </form>
