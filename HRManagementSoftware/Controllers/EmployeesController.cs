@@ -18,31 +18,6 @@ namespace HRManagementSoftware.Controllers
         public EmployeesController(HRManagementContext context)
         {
             _context = context;
-
-            if(_context.Employees.Count() == 0) {
-                Address address = new Address
-                {
-                    Street = "Bräuhausgasse 3a",
-                    Zip = 2700,
-                    City = "Wiener Neustadt",
-                    State = "Austria"
-                    //EmployeeId = employee.Id
-                };
-                Employee employee = new Employee
-                {
-                    FirstName = "Lars",
-                    LastName = "Müller",
-                    Age = 20,
-                    Addresses = new List<Address>
-                    {
-                        address
-                    }
-                };
-
-                _context.Employees.Add(employee);
-                _context.Addresses.Add(employee.Addresses.First());
-                _context.SaveChanges();
-            }
         }
 
         [HttpGet]
@@ -103,19 +78,13 @@ namespace HRManagementSoftware.Controllers
                 }
             }
 
-            var addressesToAdd = new List<Address>();
             foreach (Address address in employee.Addresses)
             {
-                //if (!employeeToUpdate.Addresses.Contains(address))
-                //{
-                //    addressesToAdd.Add(address);
-                //}
                 var exisitngAddress = employeeToUpdate.Addresses
                 .Where(c => c.Id == address.Id)
                 .SingleOrDefault();
 
                 if (exisitngAddress != null)
-                    // Update child
                     _context.Entry(exisitngAddress).CurrentValues.SetValues(address);
                 else
                 {
@@ -123,7 +92,6 @@ namespace HRManagementSoftware.Controllers
                 }
             }
 
-           // _context.Employees.Update(employeeToUpdate);
             _context.SaveChanges();
             return new NoContentResult();
         }
