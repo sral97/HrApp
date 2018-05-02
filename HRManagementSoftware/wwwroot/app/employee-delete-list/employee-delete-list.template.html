@@ -1,0 +1,18 @@
+﻿<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="employee in employees">
+            <td><a href="#!/employees/{{employee.id}}">{{ employee.firstName }}</a></td>
+            <td>{{ employee.lastName }}</td>
+            <td><label><input type="checkbox" class="toDelete" data-employee-id="{{ employee.id }}" /> Delete?</label></td>
+        </tr>
+    </tbody>
+</table>
+<a class="btn btn-success" href="#!/employees">Back</a>
+<button class="btn btn-danger" data-ng-click="deleteSelectedEmployees()">Delete selected employees</button>
