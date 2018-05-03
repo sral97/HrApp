@@ -4,23 +4,25 @@
         templateUrl: '/app/employee-detail/employee-detail.template.html',
         controller: ['$routeParams', '$scope', '$http', '$location', function EmployeeListController($routeParams, $scope, $http, $location) {
             $scope.save = function (employee) {
-                console.log(employee);
                 var method = 'POST';
                 var url = '/api/employees';
+                var expectedResponse = 201;
                 if ($routeParams.employeeId !== 'create') {
                     method = 'PUT';
                     url = url + '/' + employee.id;
+                    expectedResponse = 204;
                 }
                 $http({
                     method: method,
                     url: url,
                     data: JSON.stringify(employee)
                 }).then(function (response) {
-                    if (response.data.id) {
-                        $scope.employee = response.data;
-                        $location.path('/employees/' + $scope.employee.id);
+                    console.log(response);
+                    if (response.status = expectedResponse) {
+                        $location.path('/employees');
                     }
                 });
+                return false;
             };
             $scope.addAddress = function (employee) {
                 employee.addresses.push({
